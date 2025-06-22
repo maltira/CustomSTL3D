@@ -1,0 +1,40 @@
+$white: #ffffff;
+$black: #121111;
+$red: #CF3232;
+$bg1: #222126;
+$font-main: 'Montserrat', Arial, Tahoma, sans-serif;
+$pd: 120px;
+
+@mixin button-base {
+    display: flex;
+    width: 270px;
+    height: 46px;
+    padding: 10px;
+    font-size: 1rem;
+    justify-content: center;
+    border-radius: 6px;
+    align-items: center;
+    opacity: 0.8;
+}
+
+@mixin button-filled {
+  @include button-base;
+  background-color: $white;
+  color: $black;
+  border: none;
+
+  &:hover {
+    background-color: rgba($white, 90%);
+  }
+}
+
+@mixin button-outline {
+  @include button-base;
+  background-color: transparent;
+  color: $white;
+  border: 1px solid $white;
+
+  &:hover {
+    opacity: 1;
+  }
+}

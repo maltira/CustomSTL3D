@@ -34,7 +34,7 @@
 		float: right;
 	}
 	#demo-bar-buttons a {
-		font-size: 12px;
+		font-size: 0.75rem;
 		margin-left: 20px;
 		color: white;
 		margin: 2px 0;

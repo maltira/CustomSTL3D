@@ -26,8 +26,9 @@ defineProps({
 <style lang="scss" scoped>
 .product-card{
     background: $black;
-    width: 190px;
+    width: 100%;
     border-radius: 6px;
+    overflow: hidden;
     cursor: pointer;
 
     &:hover{
@@ -49,7 +50,7 @@ defineProps({
         flex-direction: column;
 
         & a {
-            font-size: 12px;
+            font-size: 0.75rem;
             font-style: normal;
             font-weight: 400;
             opacity: 0.6;
@@ -62,7 +63,7 @@ defineProps({
         }
 
         & h3 {
-            font-size: 16px;
+            font-size: 1rem;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
@@ -79,7 +80,7 @@ defineProps({
     }
     & .product-price{
         margin-top: 13px;
-        font-size: 16px;
+        font-size: 1rem;
         font-style: normal;
         font-weight: 700;
         line-height: normal;

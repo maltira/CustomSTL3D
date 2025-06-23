@@ -225,7 +225,7 @@ const toggleMenu = () => {
 }
 @media screen and (max-width: 899px){
     #main{
-        padding: 18px 30px;
+        padding: 18px 16px;
     }
     #site-search{
         display: none;

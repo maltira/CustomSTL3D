@@ -1,10 +1,11 @@
 <script setup>
+import CartCounter from '../UI/CartCounter.vue';
+
 const isOpen = ref(false);
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;
 };
-
 </script>
 
 <template>
@@ -15,9 +16,12 @@ const toggleMenu = () => {
     </div>
 
     <div class="menu-buttons">
-        <NuxtLink class="user_cart">
-                <img src="/icons/cart.svg" alt="cart">
-        </NuxtLink>
+        <div style="position: relative;">
+            <CartCounter style="top: 14px; left: 12px;"/>
+            <NuxtLink class="user_cart">
+                    <img src="/icons/cart.svg" alt="cart">
+            </NuxtLink>
+        </div>
 
         <button class="menu" @click="toggleMenu">
             <img src="/icons/menu.svg" alt="menu-img">
@@ -52,6 +56,7 @@ const toggleMenu = () => {
             </NuxtLink>
         </div>
         <div class="header_user">
+            <CartCounter/>
             <NuxtLink class="user_cart">
                 <img src="/icons/cart.svg" alt="cart">
             </NuxtLink>
@@ -80,6 +85,14 @@ const toggleMenu = () => {
     backdrop-filter: blur(12px);
 
     background: rgba($bg1, 0.1);
+}
+.header_user {
+    position: relative;
+
+    & > div {
+        left: 12px;
+        top: 14px;
+    }
 }
 .menu-buttons{
     display: none;

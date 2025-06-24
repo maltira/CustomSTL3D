@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import ProductCard from '../components/UI/ProductCard.vue';
 import NewestModels from '../UI/NewestModels.vue';
 import ModelsByWord from '../UI/ModelsByWord.vue';
+import { useCartStore } from '~/stores/cart';
+const cart = useCartStore()
 
 const categories = ['Films & Movies', 'Animes & Mangas', 'Video Games', 'Browse All']
 const activeCategory = ref(0)
@@ -17,7 +19,7 @@ const activeCategory = ref(0)
         </div>
         <div class="title">
             <h1>Choose and buy your favourites from our <span>1000+</span> 3D models</h1>
-            <button class="button--outline">View All Models</button>
+            <button class="button--outline" @click="cart.increment">View All Models</button>
         </div>
         <div class="categories">
             <input type="search" id="site-search" placeholder="Which 3D model do you want to find?">

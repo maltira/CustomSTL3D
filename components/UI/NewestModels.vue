@@ -6,51 +6,61 @@ defineProps({
 })
 const models = [
     {
+        id: "house_xf72k1",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '7.99'
     },
     {
+        id: "house_xf7221",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '1.99'
     },
     {
+        id: "arch_zz2s4b",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '4.99'
     },
     {
+        id: "house_ff73k2",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '19.99'
     },
     {
+        id: "arch_kq8z4b",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '2.99'
     },
     {
+        id: "item_29z32e",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '12.99'
     },
     {
+        id: "item_x9r2le",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '19.99'
     },
     {
+        id: "house_ztfek1",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '11.99'
     },
     {
+        id: "weapon_pz5v3a",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '124.99'
     },
     {
+        id: "cup_r1z3q7",
         category: 'CATEGORY',
         name: "Name of the model",
         price: '1243.99'
@@ -80,6 +90,7 @@ const scrollRight = () => {
             <div class="all_cards" ref="slider"> 
                 <ProductCard v-for="(item, index) in models" 
                     :key="index"
+                    :id="item.id"
                     :title="item.name"
                     :price="item.price"
                     :category="item.category"
@@ -124,7 +135,7 @@ const scrollRight = () => {
     scroll-behavior: smooth;
 
 
-    & > div{
+    & > a{
         min-width: calc((100% - 6 * 15px) / 7);
     }
 }
@@ -158,7 +169,7 @@ const scrollRight = () => {
         margin-right: -90px;
     }
     .all_cards{
-        & > div{
+        & > a{
             min-width: calc((100% - 5 * 15px) / 6) !important;
         }
     }
@@ -171,7 +182,7 @@ const scrollRight = () => {
         margin-right: -60px;
     }
     .all_cards{
-        & > div{
+        & > a{
             min-width: calc((100% - 4 * 15px) / 5);
         }
     }
@@ -184,7 +195,7 @@ const scrollRight = () => {
         margin-right: -30px;
     }
     .all_cards{
-        & > div{
+        & > a{
             min-width: calc((100% - 2 * 15px) / 3);
         }
     }
@@ -197,7 +208,7 @@ const scrollRight = () => {
         margin-right: -16px;
     }
     .all_cards{
-        & > div{
+        & > a{
             min-width: calc((100% - 1 * 15px) / 2);
         }
     }

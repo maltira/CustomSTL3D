@@ -1,6 +1,6 @@
 *{
     color: $white;
-    // outline: 1px dashed rgba(201, 255, 201, 0.219) !important; 
+    //outline: 1px dashed rgba(201, 255, 201, 0.219) !important; 
     box-sizing: border-box;
     transition: 100ms;
 }
@@ -11,6 +11,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   font-size: 16px;
   vertical-align: baseline;
   outline: none;
+  font-family: $font-main;
 }
 body { 
     line-height: 1; 

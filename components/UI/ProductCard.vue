@@ -1,26 +1,27 @@
 <script setup>
 defineProps({
-  title: String,
-  price: [Number, String],
-  category: String,
-  image: {
-    type: String,
-    default: '/img/product-image.png'
-  }
+    id: String,
+    title: String,
+    price: [Number, String],
+    category: String,
+    image: {
+        type: String,
+        default: '/img/product-image.png'
+    }
 })
 </script>
 
 <template>
-  <div class="product-card">
+  <NuxtLink :to="`/product/${id}`" class="product-card">
     <img :src="image" :alt="title" class="product-image" />
     <div class="product-info">
         <div class="product-info__title">
-            <NuxtLink class="product-category">{{ category }}</NuxtLink>
+            <span class="product-category">{{ category }}</span>
             <h3 class="product-title">{{ title }}</h3>
         </div>
         <p class="product-price">{{ price }} $</p>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <style lang="scss" scoped>
@@ -49,7 +50,7 @@ defineProps({
         gap: 5px;
         flex-direction: column;
 
-        & a {
+        & span {
             font-size: 0.75rem;
             font-style: normal;
             font-weight: 400;

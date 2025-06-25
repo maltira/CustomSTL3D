@@ -6,12 +6,18 @@ const isOpen = ref(false);
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;
 };
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+}
 </script>
 
 <template>
   <div id="main">
-    <div class="header_search">
-        <NuxtLink>CustomSTL3D</NuxtLink>
+    <div class="header_search" >
+        <NuxtLink to="/" @click="scrollToTop">CustomSTL3D</NuxtLink>
         <input type="search" id="site-search" placeholder="Search for 3D models">
     </div>
 

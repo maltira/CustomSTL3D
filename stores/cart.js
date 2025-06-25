@@ -8,6 +8,9 @@ export const useCartStore = defineStore('cart', {
     increment() {
       this.count++
     },
+    decrement() {
+      this.count--
+    },
     setCount(value) {
       this.count = value
     }

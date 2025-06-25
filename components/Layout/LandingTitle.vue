@@ -3,8 +3,6 @@ import { ref } from 'vue'
 import ProductCard from '../components/UI/ProductCard.vue';
 import NewestModels from '../UI/NewestModels.vue';
 import ModelsByWord from '../UI/ModelsByWord.vue';
-import { useCartStore } from '~/stores/cart';
-const cart = useCartStore()
 
 const categories = ['Films & Movies', 'Animes & Mangas', 'Video Games', 'Browse All']
 const activeCategory = ref(0)
@@ -19,7 +17,7 @@ const activeCategory = ref(0)
         </div>
         <div class="title">
             <h1>Choose and buy your favourites from our <span>1000+</span> 3D models</h1>
-            <button class="button--outline" @click="cart.increment">View All Models</button>
+            <button class="button--outline">View All Models</button>
         </div>
         <div class="categories">
             <input type="search" id="site-search" placeholder="Which 3D model do you want to find?">
@@ -32,44 +30,50 @@ const activeCategory = ref(0)
                 </div>
                 <div class="category_items">
                     <div class="category_items__cards">
-
                         <ProductCard
+                            id="cup_xfefr2"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= '6.99'
                             image= "/img/product-image.png"
                         />
                         <ProductCard
+                            id="car_xsdw22"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= '6.99'
                             image= "/img/product-image.png"
                         />
                         <ProductCard
+                            id="weapon_xsd322"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= '6.99'
                             image= "/img/product-image.png"
                         />
                         <ProductCard
+                            id="weapon_zsd352"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= '6.99'
                             image= "/img/product-image.png"
                         />
                         <ProductCard
+                            id="car_zsd352"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= '6.99'
                             image= "/img/product-image.png"
                         />
                         <ProductCard
+                            id="car_dsf522"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= '6.99'
                             image= "/img/product-image.png"
                         />
                         <ProductCard
+                            id="car_zsd8fz"
                             title= "Name of the model"
                             category= "CATEGORY"
                             price= 6.99
@@ -278,7 +282,7 @@ const activeCategory = ref(0)
             top: 197px;
         }
     }
-    .category_items__cards > div:last-child{
+    .category_items__cards > a:last-child{
         display: none;
     }
     .category_button{
@@ -312,7 +316,7 @@ const activeCategory = ref(0)
             top: 197px;
         }
     }
-    .category_items__cards > div:nth-child(n+6){
+    .category_items__cards > a:nth-child(n+6){
         display: none;
     }
     .category_button{
@@ -353,7 +357,7 @@ const activeCategory = ref(0)
             top: 130px;
         }
     }
-    .category_items__cards > div:nth-child(n+4){
+    .category_items__cards > a:nth-child(n+4){
         display: none;
     }
     .category_button{
@@ -392,7 +396,7 @@ const activeCategory = ref(0)
             top: 130px;
         }
     }
-    .category_items__cards > div:nth-child(n+3){
+    .category_items__cards > a:nth-child(n+3){
         display: none;
     }
     .categories_buttons{

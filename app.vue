@@ -1,6 +1,14 @@
 <script setup>
 import Header from '../components/Layout/Header.vue';
 import Footer from '../components/Layout/Footer.vue'
+import { onMounted } from 'vue'
+import { useCartStore } from '@/stores/cart'
+
+const cart = useCartStore()
+
+onMounted(() => {
+  cart.initialize()
+})
 </script>
 
 <template>

@@ -1,27 +1,112 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useCartStore } from '~/stores/cart';
+import { useProductsStore } from '@/stores/products'
+
+const productsStore = useProductsStore()
 const cart = useCartStore()
 const activeImage = ref(0)
 const isSaved = ref(false)
 const isAdded = ref(false)
+const route = useRoute()
+const user = ref(null)
 
-function toggleSaved() {
+// Вытаскиваем исходную модель
+const model = computed(() => productsStore.getById(route.params.name))
+
+async function toggleSaved() {
   isSaved.value = !isSaved.value
-  console.log(isSaved.value)
+  if (isSaved.value) {
+    try {
+      const response = await fetch('/api/user/wishlist', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({product_id: route.params.name})
+      });
+      const result = await response.json();
+
+      if (result.success) console.log(`Товар ${route.params.name} успешно сохранён`);
+      else console.error('Не удалось сохранить товар');
+    } catch (error) {
+      console.error('Ошибка при сохранении товара:', error);
+    }
+  }
+  else{
+    try {
+      const response = await fetch('/api/user/wishlist', {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ product_id: route.params.name })
+      });
+
+      const result = await response.json();
+
+      if (result.success) console.log(`Товар ${route.params.name} удалён из вишлиста`);
+      else console.error('Не удалось удалить сохранённый товар');
+    } catch (error) {
+      console.error('Ошибка при удалении сохранённого товара:', error);
+    }
+  }
 }
-function toggleAdded() {
+async function toggleAdded() {
   isAdded.value = !isAdded.value
   console.log(isAdded.value)
-  if (isAdded.value) cart.increment()
-  else cart.decrement()
+  if (isAdded.value) {
+    cart.increment()
+    try {
+      const response = await fetch('/api/user/cart', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({product_id: route.params.name})
+      });
+      const result = await response.json();
+
+      if (result.success) console.log(`Товар ${route.params.name} успешно добавлен в корзину`);
+      else console.error('Не удалось добавить товар');
+    } catch (error) {
+      console.error('Ошибка при добавлении товара:', error);
+    }
+  }
+  else {
+    cart.decrement()
+    try {
+      const response = await fetch('/api/user/cart', {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ product_id: route.params.name })
+      });
+
+      const result = await response.json();
+
+      if (result.success) console.log(`Товар ${route.params.name} удалён из корзины`);
+      else console.error('Не удалось удалить товар');
+    } catch (error) {
+      console.error('Ошибка при удалении товара:', error);
+    }
+  }
 }
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/user')
+    if (res.ok) {
+      user.value = await res.json()
+      isAdded.value = user.value.cart.some(item => item.product_id === route.params.name)
+      isSaved.value = user.value.wishlist.includes(route.params.name)
+      console.log(isSaved.value)
+    } 
+    else console.error('Ошибка загрузки пользователя')
+  } catch (e) {
+    console.error('Ошибка запроса:', e)
+  }
+})
 </script>
 <template>
   <div id="product">
     <div class="product_block">
       <div class="product_block_route">
-          Home / All Models / Anime and Manga / Naruto
+          Home / All Models / {{ model.category }} / {{ model.title }}
       </div>
       <div class="product_block_content">
         <div class="product_images">
@@ -34,10 +119,10 @@ function toggleAdded() {
         </div>
         <div class="product_text">
           <div class="product_title">
-            <h1>Name of the Model</h1>
+            <h1>{{model.title}}</h1>
             <div class="product_price">
-              <p class="old-price">$12.99</p>
-              <p class="new-price">$7.99</p>
+              <p class="old-price">${{ model.old_price }}</p>
+              <p class="new-price">${{ model.price }}</p>
             </div>
           </div>
           <div class="product_actions">
@@ -46,23 +131,21 @@ function toggleAdded() {
             </button>
             <button class="add_to_cart" @click="toggleAdded" :class="{active_cart_button: isAdded}">
               <img :src="isAdded ? '/icons/cart-check.svg' : '/icons/add-to-cart.svg'" alt="add-to-cart">
-              <p>Add To Cart</p>
+              <p>{{ isAdded ? 'Added To Cart' : 'Add To Cart'}}</p>
             </button>
           </div>
           <div class="product_tags">
             <p class="block_name">Tag(s)</p>
             <div>
-              <NuxtLink>anime</NuxtLink>
-              <p>,</p>
-              <NuxtLink>manga</NuxtLink>
+              <span v-for="(item, index) in model.tags" :key="index">
+                <NuxtLink>{{ item }}</NuxtLink><span v-if="index < model.tags.length - 1"> , </span>
+              </span>
             </div>
           </div>
           <div class="product_description">
             <p class="block_name">Description</p>
             <div style="white-space: pre-line;">
-              {{ `Lorem ipsum dolor sit amet consectetur. Mi at varius quam felis duis ullamcorper quis. Euismod amet suspendisse amet at fermentum egestas. Magna vitae mattis cras cras euismod. Id sapien sagittis dui phasellus hac a. Eu proin elit adipiscing tellus dolor in.
-
-              Ante sed enim quis potenti gravida pretium. Sed elit luctus molestie morbi id. Adipiscing et nulla dolor dui. Id pellentesque a tincidunt euismod. Vestibulum nunc at tempor sollicitudin suspendisse sagittis interdum. Nunc habitasse amet at nisi leo volutpat venenatis eu. Dolor a vulputate ipsum blandit nulla in congue. Id rhoncus amet nec montes tristique.` }}
+              {{ `${model.description}` }}
             </div>
           </div>
         </div>
@@ -171,7 +254,7 @@ function toggleAdded() {
       opacity: 0.6;
       pointer-events: none;
     }
-    & > a{
+    & > span > a{
       font-size: 1rem;
       font-style: normal;
       font-weight: 400;
@@ -180,6 +263,10 @@ function toggleAdded() {
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+    & > span > span{
+      opacity: 0.5;
+
     }
   }
 }

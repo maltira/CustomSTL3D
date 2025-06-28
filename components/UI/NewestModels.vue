@@ -1,72 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 import ProductCard from './ProductCard.vue';
+import { useProductsStore } from '@/stores/products'
 defineProps({
   title: String,
 })
-const models = [
-    {
-        id: "house_xf72k1",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '7.99'
-    },
-    {
-        id: "house_xf7221",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '1.99'
-    },
-    {
-        id: "arch_zz2s4b",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '4.99'
-    },
-    {
-        id: "house_ff73k2",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '19.99'
-    },
-    {
-        id: "arch_kq8z4b",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '2.99'
-    },
-    {
-        id: "item_29z32e",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '12.99'
-    },
-    {
-        id: "item_x9r2le",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '19.99'
-    },
-    {
-        id: "house_ztfek1",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '11.99'
-    },
-    {
-        id: "weapon_pz5v3a",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '124.99'
-    },
-    {
-        id: "cup_r1z3q7",
-        category: 'CATEGORY',
-        name: "Name of the model",
-        price: '1243.99'
-    }
-]
+const productsStore = useProductsStore()
 const slider = ref(null)
+
+// доступ к массиву моделей
+const models = productsStore.models
 
 const scrollLeft = () => {
   slider.value.scrollBy({
@@ -91,10 +34,10 @@ const scrollRight = () => {
                 <ProductCard v-for="(item, index) in models" 
                     :key="index"
                     :id="item.id"
-                    :title="item.name"
+                    :title="item.title"
                     :price="item.price"
                     :category="item.category"
-                    :image="'/img/product-image.png'"
+                    :image="item.thumbnail"
                 />
             </div>
         </div>

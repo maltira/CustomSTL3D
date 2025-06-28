@@ -1,8 +1,11 @@
 <script setup>
 import CartCounter from '../UI/CartCounter.vue';
+import { ref, onMounted} from 'vue'
 
 const isOpen = ref(false);
+const isAuth = ref(false)
 
+const isOpenModal = ref(false)
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;
 };
@@ -12,10 +15,33 @@ function scrollToTop() {
     behavior: 'smooth'
   })
 }
+
+onMounted(() => {
+    const modal = document.getElementById('modal-pop');
+    const modal_button = document.getElementById('modal_action')
+    document.addEventListener('click', (event) => {
+        if (modal && !modal.contains(event.target) && !modal_button.contains(event.target)) {
+            isOpenModal.value = false
+        }   
+            
+    })
+})
+
 </script>
 
 <template>
   <div id="main">
+    <div id="modal-pop" class='user_actions pop-up-window' :class="{open_pop: isOpenModal}" v-if="!isAuth">
+        <NuxtLink to="/wishlist">
+            Wishlist
+        </NuxtLink>
+        <NuxtLink>
+            Orders
+        </NuxtLink>
+        <NuxtLink>
+            Log Out
+        </NuxtLink>
+    </div>
     <div class="header_search" >
         <NuxtLink to="/" @click="scrollToTop">CustomSTL3D</NuxtLink>
         <input type="search" id="site-search" placeholder="Search for 3D models">
@@ -45,10 +71,21 @@ function scrollToTop() {
                 </NuxtLink>
             </div>
             <div class="divider"></div>
-            <NuxtLink class="user_profile">
+            <NuxtLink class="user_profile" v-if="isAuth">
                 <img src="/icons/user-circle.svg" alt="user-profile">
                 <h4>Log In</h4>
             </NuxtLink>
+            <div class='user_actions' v-if="!isAuth">
+                <NuxtLink to="/wishlist">
+                    Wishlist
+                </NuxtLink>
+                <NuxtLink>
+                    Orders
+                </NuxtLink>
+                <NuxtLink>
+                    Log Out
+                </NuxtLink>
+            </div>
         </div>
     </div>
 
@@ -66,9 +103,9 @@ function scrollToTop() {
             <NuxtLink class="user_cart">
                 <img src="/icons/cart.svg" alt="cart">
             </NuxtLink>
-            <NuxtLink class="user_profile">
+            <NuxtLink id="modal_action" class="user_profile" @click="!isAuth ? isOpenModal=!isOpenModal : null">
                 <img src="/icons/user-circle.svg" alt="user-profile">
-                <h4>Log In</h4>
+                <h4 v-if="isAuth">Log In</h4>
             </NuxtLink>
         </div>
     </div>
@@ -146,9 +183,55 @@ function scrollToTop() {
         }
     }
 }
+.user_actions{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    & > a:last-child {
+        color: $red;
+    }
+}
 .open{
     opacity: 1 !important;
     pointer-events: auto !important;
+}
+.pop-up-window{
+    pointer-events: none;
+    opacity: 0;
+    position: absolute;
+    background: $black;
+    width: 200px;
+    right: 120px;
+    top: 75px;
+    gap: 0;
+    border-radius: 6px;
+    border: 1px solid rgba($white, 0.1);
+    align-items: start;
+
+    & > a {
+        padding: 15px;
+        opacity: 0.8;
+        width: 100%;
+
+        &:hover{
+            background: rgba($white, 0.05);
+            opacity: 1;
+        }
+        &:last-child{
+            opacity: 1;
+
+            &:hover{
+                background: rgba($red, 0.05);
+            }
+        }
+    }
+
+    &.open_pop{
+        pointer-events: auto !important;
+        opacity: 1 !important;
+    }
 }
 .header_search, .header_items, .header_user, .user_profile{
     display: flex;

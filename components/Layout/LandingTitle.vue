@@ -3,6 +3,11 @@ import { ref } from 'vue'
 import ProductCard from '../components/UI/ProductCard.vue';
 import NewestModels from '../UI/NewestModels.vue';
 import ModelsByWord from '../UI/ModelsByWord.vue';
+import { useProductsStore } from '@/stores/products'
+
+const productsStore = useProductsStore()
+// доступ к массиву моделей
+const models = productsStore.models
 
 const categories = ['Films & Movies', 'Animes & Mangas', 'Video Games', 'Browse All']
 const activeCategory = ref(0)
@@ -30,56 +35,14 @@ const activeCategory = ref(0)
                 </div>
                 <div class="category_items">
                     <div class="category_items__cards">
-                        <ProductCard
-                            id="cup_xfefr2"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= '6.99'
-                            image= "/img/product-image.png"
+                        <ProductCard v-for="(item, index) in models" 
+                            :key="index"
+                            :id="item.id"
+                            :title="item.title"
+                            :price="item.price"
+                            :category="item.category"
+                            :image="item.thumbnail"
                         />
-                        <ProductCard
-                            id="car_xsdw22"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= '6.99'
-                            image= "/img/product-image.png"
-                        />
-                        <ProductCard
-                            id="weapon_xsd322"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= '6.99'
-                            image= "/img/product-image.png"
-                        />
-                        <ProductCard
-                            id="weapon_zsd352"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= '6.99'
-                            image= "/img/product-image.png"
-                        />
-                        <ProductCard
-                            id="car_zsd352"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= '6.99'
-                            image= "/img/product-image.png"
-                        />
-                        <ProductCard
-                            id="car_dsf522"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= '6.99'
-                            image= "/img/product-image.png"
-                        />
-                        <ProductCard
-                            id="car_zsd8fz"
-                            title= "Name of the model"
-                            category= "CATEGORY"
-                            price= 6.99
-                            image= "/img/product-image.png"
-                        />
-                        
                     </div>
                     <NuxtLink>
                         <p>SEE MORE</p>
@@ -230,6 +193,10 @@ const activeCategory = ref(0)
     display: flex;
     width: 100%;
     gap: 15px;
+
+    & > a:nth-child(n+8){
+        display: none;
+    }
 }
 #site-search{
     background-image: url('/icons/search-black.svg');

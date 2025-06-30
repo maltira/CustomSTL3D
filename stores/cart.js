@@ -18,7 +18,7 @@ export const useCartStore = defineStore('cart', {
       try {
         const res = await fetch('/api/user')
         const user = await res.json()
-        console.log(user)
+        // console.log(user)
         if (user?.cart && Array.isArray(user.cart)) {
           this.count = user.cart.length
         } else {

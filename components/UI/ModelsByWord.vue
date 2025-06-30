@@ -78,7 +78,9 @@ const words = [
 <style lang="scss" scoped>
 .main{
     margin-top: 0 !important;
-    padding: 50px 0;
+    padding-bottom: 50px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     padding-top: 0;
     margin-bottom: 0 !important;
 
@@ -139,8 +141,8 @@ const words = [
 }
 @media screen and (min-width: 1024px) and (max-width: 1280px){
     .main{
-        padding-left: 90px;
-        padding-right: 90px;
+        padding-left: 90px !important;
+        padding-right: 90px !important;
         margin-left: -90px;
         margin-right: -90px;
     }
@@ -150,8 +152,8 @@ const words = [
 }
 @media screen and (min-width: 900px) and (max-width: 1023px){
     .main{
-        padding-left: 60px;
-        padding-right: 60px;
+        padding-left: 60px !important;
+        padding-right: 60px !important;
         margin-left: -60px;
         margin-right: -60px;
     }
@@ -161,8 +163,8 @@ const words = [
 }
 @media screen and (min-width: 560px)  and (max-width: 899px){
     .main{
-        padding-left: 30px;
-        padding-right: 30px;
+        padding-left: 30px !important;
+        padding-right: 30px !important;
         margin-left: -30px;
         margin-right: -30px;
     }
@@ -172,8 +174,8 @@ const words = [
 }
 @media screen and (max-width: 559px){
     .main{
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
         margin-left: -16px;
         margin-right: -16px;
     }

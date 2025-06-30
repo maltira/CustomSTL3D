@@ -4,21 +4,21 @@ import ProductCard from '../components/UI/ProductCard.vue';
 import { useProductsStore } from '@/stores/products'
 
 const productsStore = useProductsStore()
-const isExistWishlist = ref(false)
+const isExistOrders = ref(false)
 const user = ref(null)
-const listOfSaved = []
+const listOfOrders = []
 
 onMounted(async () => {
   try {
     const res = await fetch('/api/user')
     if (res.ok) {
       user.value = await res.json()
-      isExistWishlist.value = user.value.wishlist.length > 0
+      isExistOrders.value = user.value.purchases.length > 0
 
-      for (let itemId of user.value.wishlist) {
-        listOfSaved.push(productsStore.getById(itemId))
+      for (let item of user.value.purchases) {
+        listOfOrders.push(productsStore.getById(item.product_id))
       }
-      console.log('listOfSaved: ', listOfSaved)
+      console.log('listOfOrders: ', listOfOrders)
     } 
     else console.error('Ошибка загрузки пользователя')
   } catch (e) {
@@ -29,19 +29,20 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="wishlist">
-        <h1>Your Wishlist</h1>
-        <div class="wishlist_items" v-if="isExistWishlist">
-            <ProductCard v-for="(model, i) in listOfSaved" :key="i"
+    <div class="purchases">
+        <h1>Your purchases</h1>
+        <div class="purchases_items" v-if="isExistOrders">
+            <ProductCard v-for="(model, i) in listOfOrders" :key="i"
                 :id="model.id"
                 :title="model.title"
                 :price="model.price"
                 :category="model.category"
                 :image="model.thumbnail"
+                :download_url="'efepfpsd'"
             />
         </div>
 
-        <div class="wishlist_empty" v-if="!isExistWishlist"> 
+        <div class="purchases_empty" v-if="!isExistOrders"> 
             <img width="60px" src="/icons/search-line.svg" alt="search">
             <h4>There is nothing here</h4>
         </div>
@@ -49,7 +50,7 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
-.wishlist{
+.purchases{
     display: flex;
     flex-direction: column;
     margin-top: 160px;
@@ -64,7 +65,7 @@ onMounted(async () => {
         line-height: normal;
     }
 }
-.wishlist_items{
+.purchases_items{
     display: flex;
     gap: 15px;
     flex-wrap: wrap; 
@@ -74,7 +75,7 @@ onMounted(async () => {
         flex: 0 0 auto;
     }
 }
-.wishlist_empty{
+.purchases_empty{
     display: flex;
     height: 283px;
     flex-direction: column;
@@ -98,37 +99,37 @@ onMounted(async () => {
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1280px){
-    .wishlist{
+    .purchases{
         padding: 0 90px;
     }
-    .wishlist_items > a{
+    .purchases_items > a{
         width: calc((100% - 5 * 15px) / 6);
     }
 }
 @media screen and (min-width: 900px) and (max-width: 1023px){
-    .wishlist{
+    .purchases{
         padding: 0 60px;
     }
-    .wishlist_items > a{
+    .purchases_items > a{
         width: calc((100% - 4 * 15px) / 5);
     }
 }
 @media screen and (min-width: 560px)  and (max-width: 899px){
-    .wishlist{
+    .purchases{
         margin-top: 100px;
         padding: 0 30px;
     }
-    .wishlist_items > a{
+    .purchases_items > a{
         width: calc((100% - 2 * 15px) / 3);
     }
 }
 @media screen and (max-width: 559px){
-    .wishlist{
+    .purchases{
         margin-top: 100px;
         margin-bottom: 40px;
         padding: 0 16px;
     }
-    .wishlist_items > a{
+    .purchases_items > a{
         width: calc((100% - 1 * 15px) / 2);
     }
 }

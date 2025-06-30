@@ -7,7 +7,8 @@ defineProps({
     image: {
         type: String,
         default: '/img/product-image.png'
-    }
+    },
+    download_url: String
 })
 </script>
 
@@ -20,6 +21,10 @@ defineProps({
             <h3 class="product-title">{{ title }}</h3>
         </div>
         <p class="product-price">{{ price }} $</p>
+        <a class="download-model" :href=download_url v-if="download_url != null" @click.stop>
+            <p>Download</p>
+            <img src="/icons/download.svg" alt="">
+        </a>
     </div>
   </NuxtLink>
 </template>
@@ -33,7 +38,7 @@ defineProps({
     cursor: pointer;
 
     &:hover{
-        opacity: 0.9;
+        background: rgba($black, 0.9);
         .product-title{
             opacity: 1;
         }
@@ -41,6 +46,26 @@ defineProps({
 }
 .product-image{
     width: 100%;
+}
+.download-model{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin-top: 10px;
+    cursor: pointer;
+    opacity: 0.6;
+
+    & > p {
+        font-size: 14px;
+    }
+
+    & > img {
+        width: 18px;
+    }
+
+    &:hover{
+        opacity: 1;
+    }
 }
 .product-info{
     padding: 15px 20px 20px 20px;

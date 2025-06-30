@@ -19,11 +19,22 @@ function scrollToTop() {
 onMounted(() => {
     const modal = document.getElementById('modal-pop');
     const modal_button = document.getElementById('modal_action')
+    const menu_open = document.getElementById('menu-open')
+    const usermenu = document.getElementById('usermenu')
+    const router = useRouter()
     document.addEventListener('click', (event) => {
-        if (modal && !modal.contains(event.target) && !modal_button.contains(event.target)) {
+        const target = event.target;
+
+        router.afterEach(() => {
+            isOpen.value = false
+        })
+
+        if (!usermenu.contains(target) && !menu_open.contains(target)) {
+            isOpen.value = false
+        }
+        if (!modal_button.contains(target)) {
             isOpenModal.value = false
-        }   
-            
+        }        
     })
 })
 
@@ -35,7 +46,7 @@ onMounted(() => {
         <NuxtLink to="/wishlist">
             Wishlist
         </NuxtLink>
-        <NuxtLink>
+        <NuxtLink to="/orders">
             Orders
         </NuxtLink>
         <NuxtLink>
@@ -55,11 +66,11 @@ onMounted(() => {
             </NuxtLink>
         </div>
 
-        <button class="menu" @click="toggleMenu">
+        <button id="menu-open" class="menu" @click="toggleMenu">
             <img src="/icons/menu.svg" alt="menu-img">
         </button>
 
-        <div class="usermenu" :class="{'open': isOpen}">
+        <div id='usermenu' class="usermenu" :class="{'open': isOpen}">
             <input style="width: 100%;" type="search" id="site-search" class="search-second" placeholder="Search for 3D models">
             <div class="divider"></div>
             <div class="links">
@@ -79,7 +90,7 @@ onMounted(() => {
                 <NuxtLink to="/wishlist">
                     Wishlist
                 </NuxtLink>
-                <NuxtLink>
+                <NuxtLink to="/orders">
                     Orders
                 </NuxtLink>
                 <NuxtLink>

@@ -80,6 +80,7 @@ const scrollRight = () => {
 
     & > a{
         min-width: calc((100% - 6 * 15px) / 7);
+        max-width: 250px;
     }
 }
 .all_cards::-webkit-scrollbar {
@@ -93,6 +94,9 @@ const scrollRight = () => {
 .cards_arrow > button {
     background: none;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover{
         & > img {
@@ -140,6 +144,7 @@ const scrollRight = () => {
     .all_cards{
         & > a{
             min-width: calc((100% - 2 * 15px) / 3);
+
         }
     }
 }

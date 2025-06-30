@@ -1,6 +1,6 @@
 *{
     color: $white;
-    //outline: 1px dashed rgba(201, 255, 201, 0.219) !important; 
+    // outline: 1px dashed rgba(201, 255, 201, 0.219) !important; 
     box-sizing: border-box;
     transition: 100ms;
 }
@@ -62,4 +62,8 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   display: none;
+}
+
+html {
+  overflow-y: scroll;
 }

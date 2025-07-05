@@ -207,7 +207,7 @@ const activeCategory = ref(0)
     border-radius: 20px;
 
     color: $black;
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

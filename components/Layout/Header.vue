@@ -1,9 +1,8 @@
 <script setup>
 import CartCounter from '../UI/CartCounter.vue';
 import { ref, onMounted} from 'vue'
-
+const { loggedIn, user, session, fetch, clear: clearSession} = useUserSession()
 const isOpen = ref(false);
-const isAuth = ref(false)
 
 const isOpenModal = ref(false)
 const toggleMenu = () => {
@@ -14,6 +13,10 @@ function scrollToTop() {
     top: 0,
     behavior: 'smooth'
   })
+}
+async function logout() {
+  await clearSession()
+  await navigateTo('/account/login')
 }
 
 onMounted(() => {
@@ -42,14 +45,14 @@ onMounted(() => {
 
 <template>
   <div id="main">
-    <div id="modal-pop" class='user_actions pop-up-window' :class="{open_pop: isOpenModal}" v-if="!isAuth">
+    <div id="modal-pop" class='user_actions pop-up-window' :class="{open_pop: isOpenModal}" v-if="loggedIn">
         <NuxtLink to="/wishlist">
             Wishlist
         </NuxtLink>
         <NuxtLink to="/orders">
             Orders
         </NuxtLink>
-        <NuxtLink>
+        <NuxtLink @click="logout">
             Log Out
         </NuxtLink>
     </div>
@@ -61,7 +64,7 @@ onMounted(() => {
     <div class="menu-buttons">
         <div style="position: relative;">
             <CartCounter style="top: 14px; left: 12px;"/>
-            <NuxtLink class="user_cart">
+            <NuxtLink class="user_cart" to="/cart">
                     <img src="/icons/cart.svg" alt="cart">
             </NuxtLink>
         </div>
@@ -82,18 +85,18 @@ onMounted(() => {
                 </NuxtLink>
             </div>
             <div class="divider"></div>
-            <NuxtLink class="user_profile" v-if="isAuth">
+            <NuxtLink class="user_profile" v-if="!loggedIn">
                 <img src="/icons/user-circle.svg" alt="user-profile">
                 <h4>Log In</h4>
             </NuxtLink>
-            <div class='user_actions' v-if="!isAuth">
+            <div class='user_actions' v-if="loggedIn">
                 <NuxtLink to="/wishlist">
                     Wishlist
                 </NuxtLink>
                 <NuxtLink to="/orders">
                     Orders
                 </NuxtLink>
-                <NuxtLink>
+                <NuxtLink @click="logout">
                     Log Out
                 </NuxtLink>
             </div>
@@ -111,12 +114,12 @@ onMounted(() => {
         </div>
         <div class="header_user">
             <CartCounter/>
-            <NuxtLink class="user_cart">
+            <NuxtLink class="user_cart" to="/cart">
                 <img src="/icons/cart.svg" alt="cart">
             </NuxtLink>
-            <NuxtLink id="modal_action" class="user_profile" @click="!isAuth ? isOpenModal=!isOpenModal : null">
+            <NuxtLink :to="!loggedIn ? '/account/login' : undefined" id="modal_action" class="user_profile" @click="loggedIn ? isOpenModal=!isOpenModal : null">
                 <img src="/icons/user-circle.svg" alt="user-profile">
-                <h4 v-if="isAuth">Log In</h4>
+                <h4 v-if="!loggedIn">Log In</h4>
             </NuxtLink>
         </div>
     </div>
@@ -215,7 +218,7 @@ onMounted(() => {
     background: $black;
     width: 200px;
     right: 120px;
-    top: 75px;
+    top: 80px;
     gap: 0;
     border-radius: 6px;
     border: 1px solid rgba($white, 0.1);

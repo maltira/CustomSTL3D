@@ -2,27 +2,24 @@
 import { ref } from 'vue'
 import ProductCard from '../components/UI/ProductCard.vue';
 import { useProductsStore } from '@/stores/products'
+const { loggedIn, user, session, fetch, clear} = useUserSession()
+definePageMeta({
+  middleware: ['authenticated'],
+})
 
 const productsStore = useProductsStore()
 const isExistWishlist = ref(false)
-const user = ref(null)
 const listOfSaved = []
 
 onMounted(async () => {
   try {
-    const res = await fetch('/api/user')
-    if (res.ok) {
-      user.value = await res.json()
-      isExistWishlist.value = user.value.wishlist.length > 0
+    isExistWishlist.value = user.wishlist.length > 0
 
-      for (let itemId of user.value.wishlist) {
+    for (let itemId of user.wishlist) {
         listOfSaved.push(productsStore.getById(itemId))
-      }
-      console.log('listOfSaved: ', listOfSaved)
-    } 
-    else console.error('Ошибка загрузки пользователя')
+    }
   } catch (e) {
-    console.error('Ошибка запроса:', e)
+    console.error('Ошибка:', e)
   }
 })
 

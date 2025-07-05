@@ -31,6 +31,8 @@ defineProps({
 
 <style lang="scss" scoped>
 .product-card{
+    display: flex;
+    flex-direction: column;
     background: $black;
     width: 100%;
     border-radius: 6px;
@@ -46,6 +48,7 @@ defineProps({
 }
 .product-image{
     width: 100%;
+    aspect-ratio: 1/1;
 }
 .download-model{
     display: flex;
@@ -69,7 +72,11 @@ defineProps({
 }
 .product-info{
     padding: 15px 20px 20px 20px;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-width: 100%;
     & .product-info__title{
         display: flex;
         gap: 5px;

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '~/stores/cart';
 import { useProductsStore } from '@/stores/products'
+const { loggedIn, user, session, fetch, clear} = useUserSession()
 
 const productsStore = useProductsStore()
 const cart = useCartStore()
@@ -10,7 +11,6 @@ const activeImage = ref(0)
 const isSaved = ref(false)
 const isAdded = ref(false)
 const route = useRoute()
-const user = ref(null)
 
 // Вытаскиваем исходную модель
 const model = computed(() => productsStore.getById(route.params.name))
@@ -19,30 +19,25 @@ async function toggleSaved() {
   isSaved.value = !isSaved.value
   if (isSaved.value) {
     try {
-      const response = await fetch('/api/user/wishlist', {
+      const response = await $fetch('/api/user/wishlist', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({product_id: route.params.name})
+        body: {product_id: route.params.name}
       });
-      const result = await response.json();
 
-      if (result.success) console.log(`Товар ${route.params.name} успешно сохранён`);
-      else console.error('Не удалось сохранить товар');
+      if (response.success) console.log(`Товар ${route.params.name} сохранён в вишлист`);
+      else console.error('Не удалось сохрнаить товар');
     } catch (error) {
       console.error('Ошибка при сохранении товара:', error);
     }
   }
   else{
     try {
-      const response = await fetch('/api/user/wishlist', {
+      const response = await $fetch('/api/user/wishlist', {
         method: 'DELETE',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ product_id: route.params.name })
+        body: { product_id: route.params.name }
       });
-
-      const result = await response.json();
-
-      if (result.success) console.log(`Товар ${route.params.name} удалён из вишлиста`);
+      console.log(response.wishlist)
+      if (response.success) console.log(`Товар ${route.params.name} удалён из вишлиста`);
       else console.error('Не удалось удалить сохранённый товар');
     } catch (error) {
       console.error('Ошибка при удалении сохранённого товара:', error);
@@ -89,14 +84,10 @@ async function toggleAdded() {
 
 onMounted(async () => {
   try {
-    const res = await fetch('/api/user')
-    if (res.ok) {
-      user.value = await res.json()
-      isAdded.value = user.value.cart.some(item => item.product_id === route.params.name)
-      isSaved.value = user.value.wishlist.includes(route.params.name)
-      console.log(isSaved.value)
-    } 
-    else console.error('Ошибка загрузки пользователя')
+    console.log('product:', user.value)
+    isAdded.value = user.value.cart.some(item => item.product_id === route.params.name)
+    isSaved.value = user.value.wishlist.includes(route.params.name)
+    console.log(isSaved.value, isAdded.value)
   } catch (e) {
     console.error('Ошибка запроса:', e)
   }

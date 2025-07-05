@@ -1,13 +1,35 @@
-export default defineEventHandler(async (event) => {
-    const body = await readBody<{ product_id: string }>(event)
-    const userRaw = await useStorage('user').getItem('user.json')
-    
-    const user = userRaw as { wishlist: string[] }
+// server/api/user/wishlist.post.ts
+import { z } from 'zod'
+import type { User } from '~/types/user'
 
-    if (!user!.wishlist.includes(body.product_id)) {
-        user!.wishlist.push(body.product_id)
-        await useStorage('user').setItem('user.json', user)
-    }
-    console.log('\nwishlist: ', user.wishlist)
-    return { success: true }
+const schema = z.object({
+  product_id: z.string().min(1)
+})
+
+export default defineEventHandler(async (event) => {
+  const session = await getUserSession(event)
+  if (!session?.user) {
+    throw createError({ statusCode: 401, message: 'Not authorized' })
+  }
+  const user = session.user as User
+  const { product_id } = await readValidatedBody(event, schema.parse)
+
+  const storage = useStorage('user')
+  const users = await storage.getItem('users.json') as any[] || []
+
+  const userIndex = users.findIndex(u => u.id === user.id)
+  if (userIndex === -1) {
+    throw createError({ statusCode: 404, message: 'User not found' })
+  }
+
+  const wishlist = users[userIndex].wishlist || []
+  if (!wishlist.includes(product_id)) {
+    wishlist.push(product_id)
+    users[userIndex].wishlist = wishlist
+    await storage.setItem('users.json', users)
+  }
+
+  await setUserSession(event, { user: users[userIndex] })
+
+  return { success: true, wishlist: users[userIndex].wishlist }
 })

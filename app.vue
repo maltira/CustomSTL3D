@@ -6,9 +6,6 @@ import { useCartStore } from '@/stores/cart'
 
 const cart = useCartStore()
 
-onMounted(() => {
-  cart.initialize()
-})
 </script>
 
 <template>
